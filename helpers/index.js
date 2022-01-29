@@ -1,6 +1,8 @@
 'use strict'
 
 module.exports = {
-  mocks: require('./mocks'),
+  createPagination: require('./pagination'),
+  fakeTitle: require('./fakeTitle'),
   loaders: require('./loaders'),
+  mocks: require('./mocks'),
 }

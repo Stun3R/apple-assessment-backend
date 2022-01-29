@@ -11,7 +11,7 @@ exports.loadFiles = ({ dir, dependency = null, capitalize = false }) => {
   const files = {}
 
   readdirSync(dir)
-    .filter((file) => file !== basename(__filename))
+    .filter((file) => file !== 'index.js')
     .forEach((file) => {
       let tmp
       if (dependency) tmp = require(join(dir, file))(dependency)

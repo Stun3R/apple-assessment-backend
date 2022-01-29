@@ -4,10 +4,13 @@ const Koa = require('koa')
 const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
 const helmet = require('koa-helmet')
-const Router = require('koa-router')
-const { server, functions, database, models } = require('./config')
+const { server, functions, database } = require('./config')
+const errorMiddleware = require('./middleware/error')
+const registerApi = require('./api')
 
 const koa = new Koa()
+
+koa.use(errorMiddleware)
 
 // development middlewares usage
 if (server.isDev) {
@@ -23,24 +26,10 @@ koa
   )
   .use(helmet())
 
-const router = new Router()
-
-router.get('/', (ctx) => {
-  ctx.body = {
-    message: 'Hello World',
-  }
-})
-
-router.get('/projects', async (ctx) => {
-  const projects = await models.Project.fetchAll({
-    withRelated: ['assignee_to'],
-  })
-
-  ctx.body = projects
-})
-
-// apply router
-koa.use(router.routes()).use(router.allowedMethods())
+/**
+ * register all routes
+ */
+registerApi(koa)
 
 const start = async () => {
   /**
@@ -48,9 +37,9 @@ const start = async () => {
    */
   await database.knex.migrate.latest()
   if (server.isDev) {
+    await functions.seedProjects()
+    await functions.seedAssignees()
   }
-  await functions.seedProjects()
-  await functions.seedAssignees()
 
   return koa.listen(server.port)
 }
