@@ -35,7 +35,9 @@ module.exports = {
       database: process.env.DB_NAME || 'apple',
       user: process.env.DB_USER || 'apple',
       password: process.env.DB_PASSWORD || 'apple',
-      ssl: false,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     },
     pool: {
       min: 2,
