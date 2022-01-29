@@ -8,7 +8,7 @@ exports.up = function (knex) {
     table.timestamp('created_timestamp').defaultTo(knex.fn.now())
     table.timestamp('updated_timestamp')
 
-    table.integer('assignee_to').references('assignees.id')
+    table.integer('assigned_to').references('assignees.id')
   })
 }
 

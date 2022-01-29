@@ -5,7 +5,7 @@ module.exports = async (ctx, next) => {
     await next()
   } catch (err) {
     ctx.status = err.statusCode || err.status || 500
-
+    console.log(err)
     if (Boom.isBoom(err)) {
       ctx.body = {
         ...err.output.payload,

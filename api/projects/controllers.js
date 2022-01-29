@@ -17,7 +17,7 @@ exports.find = async (ctx) => {
    */
   const count = await models.Project.query((qb) => {
     if (category) qb.where('category', '=', category)
-    if (assignee) qb.where('assignee_to', '=', assignee)
+    if (assignee) qb.where('assigned_to', '=', assignee)
   }).count()
 
   /**
@@ -33,11 +33,11 @@ exports.find = async (ctx) => {
     qb.offset(offset).limit(pagination.pageSize)
 
     if (category) qb.where('category', '=', category)
-    if (assignee) qb.where('assignee_to', '=', assignee)
+    if (assignee) qb.where('assigned_to', '=', assignee)
   })
     .orderBy(orderBy)
     .fetchAll({
-      withRelated: ['assignee_to'],
+      withRelated: ['assigned_to'],
     })
 
   ctx.body = {
@@ -57,7 +57,7 @@ exports.findById = async (ctx) => {
   try {
     const project = await models.Project.where({ id: projectId }).fetch({
       require: true,
-      withRelated: ['assignee_to'],
+      withRelated: ['assigned_to'],
     })
     ctx.body = project
   } catch (err) {
@@ -78,8 +78,12 @@ exports.create = async (ctx) => {
   /**
    * Create new project & fetch Assignee
    */
+  console.log(value)
   const project = await models.Project.forge(value).save()
-  await project.related('assignee_to').fetch()
+
+  if (value.assigned_to) {
+    await project.related('assigned_to').fetch()
+  }
 
   ctx.status = 201
   ctx.body = project
@@ -103,7 +107,7 @@ exports.update = async (ctx) => {
   const project = await models.Project.where({ id: projectId }).save(value, {
     patch: true,
   })
-  await project.related('assignee_to').fetch()
+  await project.related('assigned_to').fetch()
 
   ctx.body = project
 }

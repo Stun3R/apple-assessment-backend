@@ -6,7 +6,7 @@ module.exports = (bookshelf) => {
     hasTimestamps: false,
 
     projects: function () {
-      return this.hasMany('Project', 'assignee_to')
+      return this.hasMany('Project', 'assigned_to')
     },
   })
 }
