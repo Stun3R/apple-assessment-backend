@@ -47,6 +47,8 @@ const start = async () => {
    * Add external logic before server start
    */
   await database.knex.migrate.latest()
+  if (server.isDev) {
+  }
   await functions.seedProjects()
   await functions.seedAssignees()
 

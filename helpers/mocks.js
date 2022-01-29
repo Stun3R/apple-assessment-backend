@@ -7,7 +7,7 @@ exports.projects = (amount = 50) => {
 
   for (let i = 0; i <= amount; i++) {
     projects.push({
-      title: faker.name.title(),
+      title: faker.lorem.words(2),
       category: faker.commerce.department(),
     })
   }
