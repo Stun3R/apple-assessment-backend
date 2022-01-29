@@ -1,14 +1,20 @@
 'use strict'
 
 const { faker } = require('@faker-js/faker')
+const fakeTitle = require('./fakeTitle')
 
 exports.projects = (amount = 50) => {
   const projects = []
+  const categories = [
+    faker.commerce.department(),
+    faker.commerce.department(),
+    faker.commerce.department(),
+  ]
 
-  for (let i = 0; i <= amount; i++) {
+  for (let i = 0; i < amount; i++) {
     projects.push({
-      title: faker.lorem.words(2),
-      category: faker.commerce.department(),
+      title: fakeTitle(),
+      category: faker.random.arrayElement(categories),
     })
   }
   return projects
@@ -17,7 +23,7 @@ exports.projects = (amount = 50) => {
 exports.assignees = (amount = 10) => {
   const assignees = []
 
-  for (let i = 0; i <= amount; i++) {
+  for (let i = 0; i < amount; i++) {
     assignees.push({
       nickname: `${faker.name.firstName()} ${faker.name.lastName()}`,
     })

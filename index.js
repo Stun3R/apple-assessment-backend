@@ -34,9 +34,9 @@ const start = async () => {
    */
   await database.knex.migrate.latest()
   if (server.isDev) {
+    await functions.seedProjects()
+    await functions.seedAssignees()
   }
-  await functions.seedProjects()
-  await functions.seedAssignees()
 
   return koa.listen(server.port)
 }
