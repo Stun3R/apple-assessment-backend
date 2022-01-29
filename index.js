@@ -5,12 +5,12 @@ const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
 const helmet = require('koa-helmet')
 const Router = require('koa-router')
-const { isDev, port } = require('./config').server
+const { server, functions, database, models } = require('./config')
 
 const koa = new Koa()
 
 // development middlewares usage
-if (isDev) {
+if (server.isDev) {
   koa.use(logger())
 }
 
@@ -31,13 +31,32 @@ router.get('/', (ctx) => {
   }
 })
 
+router.get('/projects', async (ctx) => {
+  const projects = await models.Project.fetchAll({
+    withRelated: ['assignee_to'],
+  })
+
+  ctx.body = projects
+})
+
 // apply router
 koa.use(router.routes()).use(router.allowedMethods())
 
-try {
-  koa.listen(port, () =>
-    console.log(`🚀 Server ready at http://localhost:${port}/`)
-  )
-} catch (e) {
-  console.error('⛔️ Unable to start server:', e.message)
+const start = async () => {
+  /**
+   * Add external logic before server start
+   */
+  await database.knex.migrate.latest()
+  await functions.seedProjects()
+  await functions.seedAssignees()
+
+  return koa.listen(server.port)
 }
+
+start()
+  .then(() => {
+    console.log(`🚀 Server ready at http://localhost:${server.port}/`)
+  })
+  .catch((e) => {
+    console.error('⛔️ Unable to start server:', e.message)
+  })
