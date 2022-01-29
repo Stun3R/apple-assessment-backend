@@ -4,8 +4,8 @@ const Koa = require('koa')
 const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
 const helmet = require('koa-helmet')
-const Router = require('koa-router')
-const { server, functions, database, models } = require('./config')
+const { server, functions, database } = require('./config')
+const registerApi = require('./api')
 
 const koa = new Koa()
 
@@ -23,24 +23,10 @@ koa
   )
   .use(helmet())
 
-const router = new Router()
-
-router.get('/', (ctx) => {
-  ctx.body = {
-    message: 'Hello World',
-  }
-})
-
-router.get('/projects', async (ctx) => {
-  const projects = await models.Project.fetchAll({
-    withRelated: ['assignee_to'],
-  })
-
-  ctx.body = projects
-})
-
-// apply router
-koa.use(router.routes()).use(router.allowedMethods())
+/**
+ * register all routes
+ */
+registerApi(koa)
 
 const start = async () => {
   /**
