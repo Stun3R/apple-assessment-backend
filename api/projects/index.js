@@ -1,6 +1,6 @@
 'use strict'
 
-const { find } = require('./controllers')
+const { find, findById, create, update, destroy } = require('./controllers')
 
 module.exports = (Router) => {
   const router = new Router({
@@ -8,6 +8,10 @@ module.exports = (Router) => {
   })
 
   router.get('/', find)
+  router.post('/', create)
+  router.get('/:projectId', findById)
+  router.put('/:projectId', update)
+  router.delete('/:projectId', destroy)
 
   return router
 }

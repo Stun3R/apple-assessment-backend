@@ -3,10 +3,10 @@
 module.exports = (bookshelf) => {
   return bookshelf.model('Assignee', {
     tableName: 'assignees',
-    hasTimestamps: true,
+    hasTimestamps: false,
 
-    projects: () => {
-      return this.hasMany('Project')
+    projects: function () {
+      return this.hasMany('Project', 'assignee_to')
     },
   })
 }

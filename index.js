@@ -5,9 +5,12 @@ const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
 const helmet = require('koa-helmet')
 const { server, functions, database } = require('./config')
+const errorMiddleware = require('./middleware/error')
 const registerApi = require('./api')
 
 const koa = new Koa()
+
+koa.use(errorMiddleware)
 
 // development middlewares usage
 if (server.isDev) {
