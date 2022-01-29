@@ -5,11 +5,12 @@ const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
 const helmet = require('koa-helmet')
 const Router = require('koa-router')
+const { isDev, port } = require('./config').server
 
 const koa = new Koa()
 
 // development middlewares usage
-if (process.env.NODE_ENV === 'development') {
+if (isDev) {
   koa.use(logger())
 }
 
@@ -33,6 +34,10 @@ router.get('/', (ctx) => {
 // apply router
 koa.use(router.routes()).use(router.allowedMethods())
 
-koa.listen(process.env.PORT || 1337, () =>
-  console.log('🚀 Server ready at http://localhost:1337/')
-)
+try {
+  koa.listen(port, () =>
+    console.log(`🚀 Server ready at http://localhost:${port}/`)
+  )
+} catch (e) {
+  console.error('⛔️ Unable to start server:', e.message)
+}
