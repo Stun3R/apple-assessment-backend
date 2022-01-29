@@ -33,4 +33,6 @@ router.get('/', (ctx) => {
 // apply router
 koa.use(router.routes()).use(router.allowedMethods())
 
-koa.listen(1337, () => console.log('🚀 Server ready at http://localhost:1337/'))
+koa.listen(process.env.PORT || 1337, () =>
+  console.log('🚀 Server ready at http://localhost:1337/')
+)
