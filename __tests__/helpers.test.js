@@ -9,40 +9,40 @@ const { join } = require('path')
 describe('Helpers', () => {
   describe('pagination - create a valid pagination', () => {
     test('invalid page number should be returned as 1', () => {
-      const result = createPagination({ total: 10, page: -1, pageSize: 10 })
+      const result = createPagination({ total: 10, current: -1, pageSize: 10 })
       expect(result).toEqual({
         total: 10,
-        page: 1,
+        current: 1,
         pageSize: 10,
         pageCount: 1,
       })
     })
 
     test('pageSize > 100 should be returned as 100', () => {
-      const result = createPagination({ total: 10, page: 1, pageSize: 150 })
+      const result = createPagination({ total: 10, current: 1, pageSize: 150 })
       expect(result).toEqual({
         total: 10,
-        page: 1,
+        current: 1,
         pageSize: 100,
         pageCount: 1,
       })
     })
 
     test('pageSize -1 should return equal to total', () => {
-      const result = createPagination({ total: 10, page: 1, pageSize: -1 })
+      const result = createPagination({ total: 10, current: 1, pageSize: -1 })
       expect(result).toEqual({
         total: 10,
-        page: 1,
+        current: 1,
         pageSize: 10,
         pageCount: 1,
       })
     })
 
     test('pageCount should total divided by pageSize', () => {
-      const result = createPagination({ total: 10, page: 1, pageSize: 5 })
+      const result = createPagination({ total: 10, current: 1, pageSize: 5 })
       expect(result).toEqual({
         total: 10,
-        page: 1,
+        current: 1,
         pageSize: 5,
         pageCount: 2,
       })

@@ -9,7 +9,7 @@ exports.find = async (ctx) => {
   /**
    * Retrieve query params
    */
-  const { pageSize = 10, page = 1, category, assignee, orderBy } = ctx.query
+  const { pageSize = 10, current = 1, category, assignee, orderBy } = ctx.query
 
   /**
    * Count total number of projects
@@ -22,13 +22,13 @@ exports.find = async (ctx) => {
   /**
    * Handle pagination
    */
-  const pagination = createPagination({ total: count, page, pageSize })
+  const pagination = createPagination({ total: count, current, pageSize })
 
   /**
    * Create custom query with filters (category, assignee), sorts & pagination
    */
   const projects = await models.Project.query((qb) => {
-    const offset = (pagination.page - 1) * pagination.pageSize
+    const offset = (pagination.current - 1) * pagination.pageSize
     qb.offset(offset).limit(pagination.pageSize)
 
     if (category) qb.where('category', '=', category)
