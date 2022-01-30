@@ -9,14 +9,20 @@ exports.find = async (ctx) => {
   /**
    * Retrieve query params
    */
-  const { pageSize = 10, current = 1, category, assignee, orderBy } = ctx.query
+  const {
+    pageSize = 10,
+    current = 1,
+    category,
+    assigned_to,
+    orderBy,
+  } = ctx.query
 
   /**
    * Count total number of projects
    */
   const count = await models.Project.query((qb) => {
     if (category) qb.where('category', '=', category)
-    if (assignee) qb.where('assigned_to', '=', assignee)
+    if (assigned_to) qb.where('assigned_to', '=', assigned_to)
   }).count()
 
   /**
@@ -32,9 +38,9 @@ exports.find = async (ctx) => {
     qb.offset(offset).limit(pagination.pageSize)
 
     if (category) qb.where('category', '=', category)
-    if (assignee) qb.where('assigned_to', '=', assignee)
+    if (assigned_to) qb.where('assigned_to', '=', assigned_to)
   })
-    .orderBy(orderBy)
+    .orderBy(orderBy || '')
     .fetchAll({
       withRelated: ['assigned_to'],
     })

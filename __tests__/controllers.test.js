@@ -101,6 +101,18 @@ describe('Controllers', () => {
     })
   })
 
+  describe('Categories', () => {
+    test('categories - find', async () => {
+      const response = await request(koa.callback()).get('/categories')
+
+      expect(response.status).toBe(200)
+
+      expect(response.body).toHaveProperty('data')
+      expect(response.body).toHaveProperty('meta')
+      expect(response.body.data.length).toBeGreaterThanOrEqual(0)
+    })
+  })
+
   afterAll((done) => {
     knex.destroy()
     done()
