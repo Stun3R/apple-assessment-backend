@@ -1,6 +1,6 @@
 'use strict'
 
-const { join, parse, basename } = require('path')
+const { join, parse } = require('path')
 const { readdirSync } = require('fs')
 const _ = require('lodash')
 

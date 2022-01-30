@@ -13,7 +13,7 @@ exports.projects = (amount = 50) => {
 
   for (let i = 0; i < amount; i++) {
     projects.push({
-      title: fakeTitle(),
+      title: fakeTitle(faker.name.title(), 20),
       category: faker.random.arrayElement(categories),
     })
   }

@@ -1,6 +1,5 @@
 'use strict'
 
-const _ = require('lodash')
 const Boom = require('@hapi/boom')
 const { models } = require('../../config')
 const { createPagination } = require('../../helpers')
@@ -78,7 +77,6 @@ exports.create = async (ctx) => {
   /**
    * Create new project & fetch Assignee
    */
-  console.log(value)
   const project = await models.Project.forge(value).save()
 
   if (value.assigned_to) {
@@ -107,7 +105,10 @@ exports.update = async (ctx) => {
   const project = await models.Project.where({ id: projectId }).save(value, {
     patch: true,
   })
-  await project.related('assigned_to').fetch()
+
+  if (value.assigned_to) {
+    await project.related('assigned_to').fetch()
+  }
 
   ctx.body = project
 }

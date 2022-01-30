@@ -1,10 +1,8 @@
 'use strict'
 
-const _ = require('lodash')
 const Boom = require('@hapi/boom')
 const { models } = require('../../config')
 const schema = require('./schema')
-const { where } = require('lodash/fp')
 
 exports.find = async (ctx) => {
   /**
@@ -23,6 +21,7 @@ exports.find = async (ctx) => {
 
   ctx.body = {
     data: assignees,
+    meta: {},
   }
 }
 

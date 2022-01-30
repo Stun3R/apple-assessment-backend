@@ -7,7 +7,7 @@
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
     "test": "NODE_ENV=test run-s lint test:unit",
-    "test:unit": "NODE_ENV=test jest --silent --passWithNoTests",
+    "test:unit": "NODE_ENV=test jest --passWithNoTests",
     "start": "node index.js",
     "dev": "NODE_ENV=development nodemon index.js"
   },
@@ -38,6 +38,7 @@
     "jest": "^27.4.7",
     "nodemon": "^2.0.15",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "supertest": "^6.2.2"
   }
 }
