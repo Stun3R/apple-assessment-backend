@@ -1,6 +1,7 @@
 'use strict'
 
 const Koa = require('koa')
+const cors = require('@koa/cors')
 const logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
 const helmet = require('koa-helmet')
@@ -11,6 +12,7 @@ const { server } = require('./config')
 const koa = new Koa()
 
 koa.use(errorMiddleware)
+koa.use(cors())
 
 // development middlewares usage
 if (server.isDev) {
