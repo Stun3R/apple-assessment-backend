@@ -11,7 +11,7 @@ exports.find = async (ctx) => {
   const { q, orderBy } = ctx.query
 
   /**
-   * Create custom query with filters (category, assignee), sorts & pagination
+   * Create custom query
    */
   const assignees = await models.Assignee.query((qb) => {
     if (q) qb.where('nickname', 'LIKE', `%${q}%`)
