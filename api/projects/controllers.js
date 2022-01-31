@@ -1,6 +1,7 @@
 'use strict'
 
 const Boom = require('@hapi/boom')
+const _ = require('lodash')
 const { models } = require('../../config')
 const { createPagination } = require('../../helpers')
 const { creationSchema, updateSchema } = require('./schema')
@@ -78,6 +79,14 @@ exports.create = async (ctx) => {
 
   if (error) {
     throw Boom.badRequest()
+  }
+
+  if (_.isString(value.assigned_to)) {
+    const assigned_to = await models.Assignee.forge({
+      nickname: value.assigned_to,
+    }).save()
+
+    value.assigned_to = assigned_to.id
   }
 
   /**
