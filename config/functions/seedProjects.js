@@ -1,5 +1,6 @@
 'use strict'
 
+const { faker } = require('@faker-js/faker')
 const { mocks } = require('../../helpers')
 
 module.exports =
@@ -23,7 +24,7 @@ module.exports =
           ...projects,
           assigned_to:
             rawAssignees.length !== 0
-              ? rawAssignees[Math.floor(Math.random() * rawAssignees.length)].id
+              ? faker.random.arrayElement(rawAssignees).id
               : null,
         }))
         /**
