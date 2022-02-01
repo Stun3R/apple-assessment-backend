@@ -6,10 +6,29 @@ module.exports =
   ({ models, database }) =>
   async () => {
     try {
-      // check if table is empty
+      /**
+       * Retrieve projects to not erase previous data
+       */
       const results = await models.Project.fetchAll()
       if (results && results.length === 0) {
-        const projects = mocks.projects(20)
+        /**
+         * Retrieve all assignees and add them to projects
+         */
+        const assignees = await models.Assignee.fetchAll()
+        const rawAssignees = assignees.toJSON()
+        /**
+         * Get mocked project and map to add random assignee from assignees
+         */
+        const projects = mocks.projects(20).map((projects) => ({
+          ...projects,
+          assigned_to:
+            rawAssignees.length !== 0
+              ? rawAssignees[Math.floor(Math.random() * rawAssignees.length)].id
+              : null,
+        }))
+        /**
+         * Bulk insert
+         */
         const Projects = database.bookshelf.Collection.extend({
           model: models.Project,
         })

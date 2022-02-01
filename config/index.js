@@ -4,10 +4,14 @@ require('dotenv').config()
 const { join } = require('path')
 const { loadFiles } = require('../helpers').loaders
 
-// load modules (i.e: database & server configuration)
+/**
+ * Load modules (database, server ect...)
+ */
 const modules = loadFiles({ dir: join(__dirname, 'modules') })
 
-// load Bookshelf models
+/**
+ * Load bookshelf's modules
+ */
 const models = loadFiles({
   dir: join(__dirname, '..', 'database', 'models'),
   dependency: modules.database.bookshelf,
@@ -19,7 +23,9 @@ const config = {
   models,
 }
 
-// load functions
+/**
+ * Load functions (starter, seeders etc...)
+ */
 const functions = loadFiles({
   dir: join(__dirname, 'functions'),
   dependency: config,

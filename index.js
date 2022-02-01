@@ -8,9 +8,9 @@ const start = async () => {
    * Add external logic before server start
    */
   await database.knex.migrate.latest()
-  if (server.isDev) {
-    await functions.seedProjects()
+  if (!server.isProd) {
     await functions.seedAssignees()
+    await functions.seedProjects()
   }
 
   return koa.listen(server.port)

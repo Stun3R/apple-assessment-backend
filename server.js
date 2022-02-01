@@ -14,12 +14,16 @@ const koa = new Koa()
 koa.use(errorMiddleware)
 koa.use(cors())
 
-// development middlewares usage
+/**
+ * Apply here development middleware
+ */
 if (server.isDev) {
   koa.use(logger())
 }
 
-// apply global middlewares
+/**
+ * Apply here global middleware
+ */
 koa
   .use(
     bodyParser({
