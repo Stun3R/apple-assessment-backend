@@ -114,6 +114,14 @@ exports.update = async (ctx) => {
     throw Boom.badRequest()
   }
 
+  if (_.isString(value.assigned_to)) {
+    const assigned_to = await models.Assignee.forge({
+      nickname: value.assigned_to,
+    }).save()
+
+    value.assigned_to = assigned_to.id
+  }
+
   /**
    * Update project & fetch Assignee
    */

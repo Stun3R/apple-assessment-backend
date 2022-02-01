@@ -3,14 +3,17 @@
 const { mocks } = require('../../helpers')
 
 module.exports =
-  ({ knex }) =>
+  ({ models, database }) =>
   async () => {
     try {
       // check if table is empty
-      const result = await knex('projects').select()
-      if (result && result.length === 0) {
+      const results = await models.Project.fetchAll()
+      if (results && results.length === 0) {
         const projects = mocks.projects(20)
-        await knex('projects').insert(projects)
+        const Projects = database.bookshelf.Collection.extend({
+          model: models.Project,
+        })
+        await Projects.forge(projects).invokeThen('save')
         console.log('📚 Successfully seed projects!')
       }
     } catch (e) {

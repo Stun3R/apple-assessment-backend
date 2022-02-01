@@ -14,14 +14,18 @@ const models = loadFiles({
   capitalize: true,
 })
 
+const config = {
+  ...modules,
+  models,
+}
+
 // load functions
 const functions = loadFiles({
   dir: join(__dirname, 'functions'),
-  dependency: modules.database,
+  dependency: config,
 })
 
 module.exports = {
-  ...modules,
-  models,
+  ...config,
   functions,
 }

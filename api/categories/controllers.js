@@ -11,15 +11,16 @@ exports.find = async (ctx) => {
   /**
    * Create custom query
    */
-  const assignees = await models.Project.query((qb) => {
+  const categories = await models.Project.query((qb) => {
     qb.groupBy('category')
     if (q) qb.where('category', 'LIKE', `%${q}%`)
+    qb.count('id AS projects').from('projects')
   })
     .orderBy('category')
-    .fetchAll({ columns: ['category'] })
+    .fetchAll({ columns: ['category as name'] })
 
   ctx.body = {
-    data: assignees,
+    data: categories,
     meta: {},
   }
 }
