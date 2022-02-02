@@ -15,6 +15,7 @@
 - Bookshelf with knex
 - PostgreSQL
 - Jest
+- Hosted on Heroku with `staging` & `production`
 
 ## 📚 Project structure
 
