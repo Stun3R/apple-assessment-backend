@@ -1,36 +1,25 @@
 'use strict'
 
-const Koa = require('koa')
-const logger = require('koa-logger')
-const bodyParser = require('koa-bodyparser')
-const helmet = require('koa-helmet')
-const Router = require('koa-router')
+const { server, functions, database } = require('./config')
+const koa = require('./server')
 
-const koa = new Koa()
+const start = async () => {
+  /**
+   * Add external logic before server start
+   */
+  await database.knex.migrate.latest()
+  if (!server.isProd) {
+    await functions.seedAssignees()
+    await functions.seedProjects()
+  }
 
-// development middlewares usage
-if (process.env.NODE_ENV === 'development') {
-  koa.use(logger())
+  return koa.listen(server.port)
 }
 
-// apply global middlewares
-koa
-  .use(
-    bodyParser({
-      enableTypes: ['json'],
-    })
-  )
-  .use(helmet())
-
-const router = new Router()
-
-router.get('/', (ctx) => {
-  ctx.body = {
-    message: 'Hello World',
-  }
-})
-
-// apply router
-koa.use(router.routes()).use(router.allowedMethods())
-
-koa.listen(1337, () => console.log('🚀 Server ready at http://localhost:1337/'))
+start()
+  .then(() => {
+    console.log(`🚀 Server ready at http://localhost:${server.port}/`)
+  })
+  .catch((e) => {
+    console.error('⛔️ Unable to start server:', e.message)
+  })
