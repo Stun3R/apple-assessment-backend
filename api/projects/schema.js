@@ -9,5 +9,7 @@ exports.creationSchema = Joi.object({
 exports.updateSchema = Joi.object({
   title: Joi.string().max(20).not(null),
   category: Joi.string().not(null),
-  assigned_to: Joi.alternatives().try(Joi.number(), Joi.string()).allow(null),
+  assigned_to: Joi.alternatives()
+    .try(Joi.number(), Joi.string(), Joi.object())
+    .allow(null),
 })
